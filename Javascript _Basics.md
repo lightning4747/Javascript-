@@ -9,7 +9,9 @@
 6. [Conditional Statements](#6-conditional-statements)
 7. [Loops](#7-loops)
 8. [Your First Complete Example](#8-your-first-complete-example)
-9. [Practice Exercise](#practice-exercise)
+9. [Arrays - Working with Lists](#9-arrays---working-with-lists)
+10. [Objects - Structured Data](#10-objects---structured-data)
+11. [Practice Exercise](#practice-exercise)
 
 ---
 
@@ -421,6 +423,409 @@ function calculatePerimeter(width, height) {
 function categorizeSize(area) {
     if (area > 100) {
         return "large";
+    } else if (area > 50) {
+        return "medium";
+    } else {
+        return "small";
+    }
+}
+
+// Main program
+function analyzeRectangle(width, height) {
+    console.log("=== Rectangle Analysis ===");
+    console.log(`Dimensions: ${width} × ${height}`);
+    
+    // Calculate properties
+    const area = calculateArea(width, height);
+    const perimeter = calculatePerimeter(width, height);
+    const size = categorizeSize(area);
+    
+    // Display results
+    console.log(`Area: ${area} square units`);
+    console.log(`Perimeter: ${perimeter} units`);
+    console.log(`Size category: ${size}`);
+    
+    // Conditional message
+    if (area > 50) {
+        console.log("💡 Tip: This is a spacious rectangle!");
+    } else {
+        console.log("💡 Tip: This is a compact rectangle.");
+    }
+}
+
+// Example usage
+analyzeRectangle(10, 5);
+analyzeRectangle(3, 4);
+analyzeRectangle(15, 8);
+```
+
+**Expected Output:**
+```
+=== Rectangle Analysis ===
+Dimensions: 10 × 5
+Area: 50 square units
+Perimeter: 30 units
+Size category: small
+💡 Tip: This is a compact rectangle.
+```
+
+---
+
+## 9. Arrays - Working with Lists
+
+Arrays are ordered collections that store multiple values in a single variable. They're perfect for managing lists of related data like shopping items, user names, or numerical datasets.
+
+### Creating Arrays
+
+```javascript
+// Different ways to create arrays
+let fruits = ["apple", "banana", "orange"];
+let numbers = [1, 2, 3, 4, 5];
+let mixedArray = ["text", 42, true, null];
+let emptyArray = [];
+
+// Using Array constructor
+let anotherArray = new Array("red", "green", "blue");
+```
+
+### Accessing Array Elements
+
+```javascript
+let fruits = ["apple", "banana", "orange", "grape"];
+
+// Arrays are zero-indexed (first element is at index 0)
+console.log(fruits[0]);    // "apple"
+console.log(fruits[1]);    // "banana"
+console.log(fruits[2]);    // "orange"
+console.log(fruits[-1]);   // undefined (negative indices don't work)
+
+// Get the last element
+console.log(fruits[fruits.length - 1]); // "grape"
+
+// Array length
+console.log(fruits.length); // 4
+```
+
+### Essential Array Methods
+
+#### Adding and Removing Elements
+
+```javascript
+let fruits = ["apple", "banana", "orange"];
+
+// Add to the end
+fruits.push("grape");           // ["apple", "banana", "orange", "grape"]
+fruits.push("kiwi", "mango");   // Can add multiple items
+
+// Remove from the end
+let removedFruit = fruits.pop(); // Returns "mango", array becomes shorter
+
+// Add to the beginning
+fruits.unshift("strawberry");   // ["strawberry", "apple", "banana", "orange", "grape", "kiwi"]
+
+// Remove from the beginning
+let firstFruit = fruits.shift(); // Returns "strawberry"
+
+console.log(fruits); // ["apple", "banana", "orange", "grape", "kiwi"]
+```
+
+#### Finding Elements
+
+```javascript
+let fruits = ["apple", "banana", "orange", "banana"];
+
+// Check if element exists
+let hasApple = fruits.includes("apple");     // true
+let hasGrape = fruits.includes("grape");     // false
+
+// Find index of element
+let bananaIndex = fruits.indexOf("banana");  // 1 (first occurrence)
+let lastBanana = fruits.lastIndexOf("banana"); // 3 (last occurrence)
+
+// Find element that matches condition
+let longFruit = fruits.find(fruit => fruit.length > 5);  // "banana"
+let longFruitIndex = fruits.findIndex(fruit => fruit.length > 5); // 1
+```
+
+### Looping Through Arrays
+
+```javascript
+let colors = ["red", "green", "blue"];
+
+// Traditional for loop
+for (let i = 0; i < colors.length; i++) {
+    console.log(`Color ${i + 1}: ${colors[i]}`);
+}
+
+// For...of loop (modern and clean)
+for (let color of colors) {
+    console.log(`I like ${color}`);
+}
+
+// forEach method (functional approach)
+colors.forEach(function(color, index) {
+    console.log(`${index}: ${color}`);
+});
+
+// Arrow function version (most modern)
+colors.forEach((color, index) => {
+    console.log(`${index}: ${color}`);
+});
+```
+
+### Advanced Array Methods
+
+```javascript
+let numbers = [1, 2, 3, 4, 5];
+
+// Transform each element (map)
+let doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+
+// Filter elements based on condition
+let evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log(evenNumbers); // [2, 4]
+
+// Reduce array to single value
+let sum = numbers.reduce((total, num) => total + num, 0);
+console.log(sum); // 15
+
+// Check if any/all elements meet condition
+let hasEven = numbers.some(num => num % 2 === 0);     // true
+let allPositive = numbers.every(num => num > 0);      // true
+```
+
+### Array Manipulation
+
+```javascript
+let fruits = ["apple", "banana", "orange", "grape"];
+
+// Slice (extract portion without modifying original)
+let citrus = fruits.slice(1, 3);  // ["banana", "orange"]
+console.log(fruits); // Original unchanged
+
+// Splice (modify original array)
+fruits.splice(1, 2, "kiwi", "mango"); // Remove 2 items at index 1, add "kiwi", "mango"
+console.log(fruits); // ["apple", "kiwi", "mango", "grape"]
+
+// Join array into string
+let fruitString = fruits.join(", "); // "apple, kiwi, mango, grape"
+
+// Sort array
+let sortedFruits = fruits.sort(); // Alphabetical order
+let numbers = [3, 1, 4, 1, 5, 9];
+numbers.sort((a, b) => a - b);    // Numerical order: [1, 1, 3, 4, 5, 9]
+```
+
+---
+
+## 10. Objects - Structured Data
+
+Objects are collections of key-value pairs that represent real-world entities. They're perfect for modeling complex data like users, products, or configurations.
+
+### Creating Objects
+
+```javascript
+// Object literal syntax (most common)
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30,
+    isStudent: false,
+    hobbies: ["reading", "swimming", "coding"]
+};
+
+// Empty object
+let emptyObj = {};
+
+// Using Object constructor
+let anotherPerson = new Object();
+anotherPerson.name = "Alice";
+anotherPerson.age = 25;
+```
+
+### Accessing Object Properties
+
+```javascript
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30,
+    "favorite-color": "blue"  // Note: property name with dash
+};
+
+// Dot notation (preferred for simple property names)
+console.log(person.firstName); // "John"
+console.log(person.age);       // 30
+
+// Bracket notation (required for complex property names or variables)
+console.log(person["lastName"]);        // "Doe"
+console.log(person["favorite-color"]);  // "blue"
+
+// Using variables
+let property = "firstName";
+console.log(person[property]); // "John"
+```
+
+### Object Methods
+
+```javascript
+let calculator = {
+    // Properties
+    brand: "Scientific Calculator",
+    model: "SC-2000",
+    
+    // Methods (functions inside objects)
+    add: function(a, b) {
+        return a + b;
+    },
+    
+    // Modern method syntax (ES6+)
+    subtract(a, b) {
+        return a - b;
+    },
+    
+    // Arrow functions as methods
+    multiply: (a, b) => a * b,
+    
+    // Method using 'this' keyword
+    getInfo: function() {
+        return `${this.brand} - ${this.model}`;
+    }
+};
+
+// Calling methods
+console.log(calculator.add(5, 3));        // 8
+console.log(calculator.subtract(10, 4));  // 6
+console.log(calculator.getInfo());        // "Scientific Calculator - SC-2000"
+```
+
+### The 'this' Keyword
+
+```javascript
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30,
+    
+    // Method using 'this' to access object properties
+    getFullName: function() {
+        return this.firstName + " " + this.lastName;
+    },
+    
+    introduce: function() {
+        return `Hi, I'm ${this.firstName} and I'm ${this.age} years old.`;
+    },
+    
+    haveBirthday: function() {
+        this.age++;  // Modify object property
+        return `Happy birthday! Now I'm ${this.age}.`;
+    }
+};
+
+console.log(person.getFullName()); // "John Doe"
+console.log(person.introduce());   // "Hi, I'm John and I'm 30 years old."
+console.log(person.haveBirthday()); // "Happy birthday! Now I'm 31."
+```
+
+### Adding, Modifying, and Deleting Properties
+
+```javascript
+let person = {
+    firstName: "John",
+    lastName: "Doe"
+};
+
+// Adding new properties
+person.email = "john@example.com";
+person["phone"] = "555-1234";
+person.address = {
+    street: "123 Main St",
+    city: "Boston",
+    state: "MA"
+};
+
+// Modifying existing properties
+person.firstName = "Jonathan";
+person.age = 31;
+
+// Deleting properties
+delete person.phone;
+
+console.log(person);
+```
+
+### Object Destructuring (Modern ES6+ Feature)
+
+```javascript
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30,
+    email: "john@example.com",
+    address: {
+        city: "Boston",
+        state: "MA"
+    }
+};
+
+// Extract properties into variables
+const { firstName, age, email } = person;
+console.log(firstName); // "John"
+console.log(age);      // 30
+
+// Rename while destructuring
+const { firstName: name, age: years } = person;
+console.log(name);     // "John"
+console.log(years);    // 30
+
+// Default values
+const { firstName, country = "USA" } = person;
+console.log(country);  // "USA" (default value)
+
+// Nested destructuring
+const { address: { city, state } } = person;
+console.log(city);     // "Boston"
+```
+
+### Object.keys(), Object.values(), and Object.entries()
+
+```javascript
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30
+};
+
+// Get all property names
+let keys = Object.keys(person);
+console.log(keys); // ["firstName", "lastName", "age"]
+
+// Get all property values
+let values = Object.values(person);
+console.log(values); // ["John", "Doe", 30]
+
+// Get key-value pairs
+let entries = Object.entries(person);
+console.log(entries); // [["firstName", "John"], ["lastName", "Doe"], ["age", 30]]
+
+// Useful for looping through objects
+for (let [key, value] of Object.entries(person)) {
+    console.log(`${key}: ${value}`);
+}
+```
+
+### Nested Objects and Arrays
+
+```javascript
+let company = {
+    name: "Tech Solutions Inc.",
+    founded: 2010,
+    employees: [
+        {
+            name: "Alice Johnson",
+            position: "Developer",
+            skills: ["JavaScript", "Python", "Reacte";
     } else if (area > 50) {
         return "medium";
     } else {
