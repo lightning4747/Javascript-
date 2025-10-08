@@ -18,3 +18,8 @@ const {firstname, lastname, age} = person;
 console.log(firstname);
 console.log(lastname);
 console.log(age);
+
+person.email = "something@gmail.com";
+person.age = 36;
+
+console.log(email);
