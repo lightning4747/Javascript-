@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batman To-Do + Counter</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: linear-gradient(120deg, #151515, #6a0572);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+    h1 { margin-bottom: 10px; }
+    #counter { font-weight: bold; color: #0ff; margin-bottom: 20px; }
+
+    #inputArea {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      width: 200px;
+    }
+
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #00bfff;
+      color: #000;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:hover { transform: scale(1.05); }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      width: 300px;
+    }
+
+    li {
+      background: rgba(255,255,255,0.1);
+      padding: 8px;
+      margin: 6px 0;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .delete {
+      background: crimson;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🦇 To-Do App</h1>
+  <div id="counter">Tasks: 0</div>
+
+  <div id="inputArea">
+    <input type="text" id="taskInput" placeholder="Enter a task">
+    <button id="addBtn">Add</button>
+  </div>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    // ---- Step 1: Select important elements ----
+    const addBtn = document.getElementById("addBtn");
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+    const counterDisplay = document.getElementById("counter");
+
+    let taskCount = 0; // counter variable
+
+    // ---- Step 2: Add event listener to Add button ----
+    addBtn.addEventListener("click", () => {
+      const taskText = taskInput.value.trim(); // remove spaces
+
+      if (taskText === "") {
+        alert("Enter something first, Dark Knight 🦇");
+        return;
+      }
+
+      // ---- Step 3: Create new list item ----
+      const li = document.createElement("li");
+      li.textContent = taskText;
+
+      // ---- Step 4: Create Delete button for this task ----
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "X";
+      delBtn.className = "delete";
+
+      // ---- Step 5: Append delete button to li ----
+      li.appendChild(delBtn);
+      taskList.appendChild(li);
+
+      // ---- Step 6: Increase counter ----
+      taskCount++;
+      counterDisplay.textContent = `Tasks: ${taskCount}`;
+
+      // ---- Step 7: Clear input field ----
+      taskInput.value = "";
+
+      // ---- Step 8: Add delete functionality ----
+      delBtn.addEventListener("click", () => {
+        li.remove(); // remove the list item
+        taskCount--; // decrease count
+        counterDisplay.textContent = `Tasks: ${taskCount}`;
+      });
+    });
+  </script>
+
+</body>
+</html>

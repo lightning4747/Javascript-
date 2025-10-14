@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Bank System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #5a5a5a;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        button.withdraw {
+            background: #f44336;
+        }
+        
+        button.withdraw:hover {
+            background: #da190b;
+        }
+        
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            display: none;
+        }
+        
+        .account-info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .transaction {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .transaction:last-child {
+            border-bottom: none;
+        }
+        
+        .deposit {
+            color: #4CAF50;
+        }
+        
+        .withdrawal {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦇 Mini Bank System</h1>
+        
+        <div class="section">
+            <h2>Create New Account</h2>
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="initialDeposit">Initial Deposit (optional):</label>
+                <input type="number" id="initialDeposit" placeholder="0.00" min="0" step="0.01">
+            </div>
+            <button onclick="createAccount()">Create Account</button>
+        </div>
+        
+        <div class="section">
+            <h2>Account Operations</h2>
+            <div class="form-group">
+                <label for="accountId">Account ID:</label>
+                <input type="text" id="accountId" placeholder="Enter your account ID">
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" placeholder="0.00" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <button onclick="deposit()">Deposit Money</button>
+                <button class="withdraw" onclick="withdraw()">Withdraw Money</button>
+                <button onclick="checkBalance()">Check Balance</button>
+                <button onclick="viewTransactions()">View Transactions</button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>All Accounts</h2>
+            <button onclick="viewAllAccounts()">View All Accounts</button>
+            <div id="allAccounts"></div>
+        </div>
+        
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // Base URL for API calls
+        const API_BASE = '/api';
+        
+        // Display message in output div
+        function showMessage(message, isError = false) {
+            const output = document.getElementById('output');
+            output.innerHTML = message;
+            output.style.display = 'block';
+            output.style.borderLeftColor = isError ? '#f44336' : '#4CAF50';
+            output.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Create new account
+        async function createAccount() {
+            const name = document.getElementById('name').value;
+            const initialDeposit = document.getElementById('initialDeposit').value;
+            
+            if (!name) {
+                showMessage('Please enter a name', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/accounts`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        initialDeposit: initialDeposit || 0
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage(`
+                        <div class="account-info">
+                            <strong>Account created successfully!</strong><br>
+                            Name: ${data.user.name}<br>
+                            Account ID: <strong>${data.user.id}</strong><br>
+                            Initial Balance: $${data.user.balance.toFixed(2)}<br>
+                            <em>Save your Account ID for future transactions</em>
+                        </div>
+                    `);
+                    // Clear form
+                    document.getElementById('name').value = '';
+                    document.getElementById('initialDeposit').value = '';
+                } else {
+                    showMessage('Error: ' + data.error, true);
+                }
+            } catch (error) {
+                showMessage('Network error: ' + error.message, true);
+            }
+        }
+        
+        // Deposit money
+        async function deposit() {
+            const accountId = document.getElementById('accountId').value;
+            const amount = document.getElementById('amount').value;
+            
+            if (!accountId || !amount || amount <= 0) {
+                showMessage('Please enter valid account ID and amount', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/accounts/${accountId}/deposit`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: parseFloat(amount)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage(`
+                        <div class="account-info">
+                            <strong>Deposit successful!</strong><br>
+                            New Balance: $${data.newBalance.toFixed(2)}
+                        </div>
+                    `);
+                    document.getElementById('amount').value = '';
+                } else {
+                    showMessage('Error: ' + data.error, true);
+                }
+            } catch (error) {
+                showMessage('Network error: ' + error.message, true);
+            }
+        }
+        
+        // Withdraw money
+        async function withdraw() {
+            const accountId = document.getElementById('accountId').value;
+            const amount = document.getElementById('amount').value;
+            
+            if (!accountId || !amount || amount <= 0) {
+                showMessage('Please enter valid account ID and amount', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/accounts/${accountId}/withdraw`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: parseFloat(amount)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage(`
+                        <div class="account-info">
+                            <strong>Withdrawal successful!</strong><br>
+                            New Balance: $${data.newBalance.toFixed(2)}
+                        </div>
+                    `);
+                    document.getElementById('amount').value = '';
+                } else {
+                    showMessage('Error: ' + data.error, true);
+                }
+            } catch (error) {
+                showMessage('Network error: ' + error.message, true);
+            }
+        }
+        
+        // Check balance
+        async function checkBalance() {
+            const accountId = document.getElementById('accountId').value;
+            
+            if (!accountId) {
+                showMessage('Please enter your account ID', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/accounts/${accountId}/balance`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage(`
+                        <div class="account-info">
+                            <strong>Account Balance</strong><br>
+                            Name: ${data.name}<br>
+                            Current Balance: <strong>$${data.balance.toFixed(2)}</strong>
+                        </div>
+                    `);
+                } else {
+                    showMessage('Error: ' + data.error, true);
+                }
+            } catch (error) {
+                showMessage('Network error: ' + error.message, true);
+            }
+        }
+        
+        // View transactions
+        async function viewTransactions() {
+            const accountId = document.getElementById('accountId').value;
+            
+            if (!accountId) {
+                showMessage('Please enter your account ID', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/accounts/${accountId}/transactions`);
+                const transactions = await response.json();
+                
+                if (response.ok) {
+                    if (transactions.length === 0) {
+                        showMessage('No transactions found for this account.');
+                        return;
+                    }
+                    
+                    let transactionsHTML = '<div class="account-info"><strong>Transaction History</strong><br>';
+                    
+                    transactions.forEach(transaction => {
+                        const date = new Date(transaction.timestamp).toLocaleString();
+                        const typeClass = transaction.type === 'deposit' ? 'deposit' : 'withdrawal';
+                        transactionsHTML += `
+                            <div class="transaction">
+                                <span class="${typeClass}">${transaction.type.toUpperCase()}</span>: 
+                                $${transaction.amount.toFixed(2)} on ${date}
+                            </div>
+                        `;
+                    });
+                    
+                    transactionsHTML += '</div>';
+                    showMessage(transactionsHTML);
+                } else {
+                    showMessage('Error: ' + transactions.error, true);
+                }
+            } catch (error) {
+                showMessage('Network error: ' + error.message, true);
+            }
+        }
+        
+        // View all accounts (admin function)
+        async function viewAllAccounts() {
+            try {
+                const response = await fetch(`${API_BASE}/accounts`);
+                const accounts = await response.json();
+                
+                if (response.ok) {
+                    if (accounts.length === 0) {
+                        document.getElementById('allAccounts').innerHTML = '<p>No accounts found.</p>';
+                        return;
+                    }
+                    
+                    let accountsHTML = '<div class="account-info"><strong>All Accounts</strong><br>';
+                    
+                    accounts.forEach(account => {
+                        accountsHTML += `
+                            <div class="transaction">
+                                ID: ${account.id} | Name: ${account.name} | Balance: $${account.balance.toFixed(2)}
+                            </div>
+                        `;
+                    });
+                    
+                    accountsHTML += '</div>';
+                    document.getElementById('allAccounts').innerHTML = accountsHTML;
+                } else {
+                    document.getElementById('allAccounts').innerHTML = '<p>Error loading accounts.</p>';
+                }
+            } catch (error) {
+                document.getElementById('allAccounts').innerHTML = '<p>Network error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

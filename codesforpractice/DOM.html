@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: rgb(55, 55, 55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input {
+            margin: 15px;
+            border-radius: 2px;
+            border: 3px solid rgb(179, 179, 6);
+            padding: 3px;
+            width: 300px;
+            color: black;
+        }
+        .something {
+            margin-top: 250px;
+        }
+
+        button {
+            border: 2px solid red;
+            background-color: rgb(231, 121, 121);
+        }
+
+        #output {
+            color: white;
+            text-shadow: 2px 2px 4px rgb(0, 13, 255);
+            text-rendering: optimizeSpeed;
+        }
+        
+    </style>
+</head>
+<body>
+    <form action="" class="something">
+        <button id="show">Show tasks</button>
+        <input type="text" placeholder="Enter the task" id="input-todo" >
+        <button id="add">click to add</button>
+        <br>
+        <ul id="output"></ul>
+    </form>
+    <script>
+     const showing = document.getElementById("show");
+     const inputtodo = document.getElementById("input-todo");
+     const add = document.getElementById("add");
+     const output = document.getElementById("output");
+
+     add.addEventListener("click",
+        (e) => {
+            e.preventDefault();
+            if(inputtodo.value.trim()) {
+            const list = document.createElement("li");
+            list.textContent = inputtodo.value.trim();
+            
+            list.addEventListener("click", () => {
+                list.remove();
+            });
+
+            output.style.display = "none";
+            output.appendChild(list);
+            inputtodo.value="";
+            }
+
+            
+        }
+     );
+
+     showing.addEventListener("click",
+        (e) => {
+            e.preventDefault();
+            // This button currently has no action.
+            output.style.display = "block"; 
+        }
+     )
+
+    </script>
+</body>
+</html>

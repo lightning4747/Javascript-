@@ -10,7 +10,7 @@ let person = {
 
 console.log(person);
 
-console.log(person.firstname);
+console.log(person.firstname);x
 console.log(person["lastname"]);
 console.log(person.getperson());
 
