@@ -32,15 +32,11 @@
         }
 
         section {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            gap: 10px;
-            justify-content:center ;
-            align-items: center;
-            position: relative;
-            top: 190px;
-            right: 300px;
+           position: absolute;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           top: 170px;
         }
 
         button {
@@ -50,6 +46,14 @@
       cursor: pointer;
       border-radius: 8px;
       font-size: 16px;
+        }
+
+        #ten {
+          margin-top: 350px;
+          position: absolute;
+          width: 250px;
+          height: 100px;
+          cursor: all-scroll;
         }
     </style>
 </head>
@@ -73,16 +77,29 @@
         </button>
 
     </section>
+
+    <section>
+      <button id="ten">Click me</button>
+    </section>
     <script>
 
       const buttons = document.querySelectorAll("button");
 
     buttons.forEach(btn => {
       btn.addEventListener("click", () => {
-        if (btn.id === "hehe") {
+        if (btn.id === "hehe") {          
           const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
-          document.body.style.backgroundColor = randomColor;
-        } else {
+          document.body.style.backgroundColor = randomColor;     
+        } 
+         else if(btn.id === "ten") {
+          for(let i = 0; i<100;i++) {
+           let colors ="#" + Math.floor(Math.random()*16777215).toString(16);
+           setTimeout(()=> {
+             document.body.style.backgroundColor = colors;
+           }, i *500);
+         }      
+        }
+        else {
           document.body.style.backgroundColor = btn.id;
         }
       });
