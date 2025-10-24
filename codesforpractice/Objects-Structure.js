@@ -10,7 +10,7 @@ let person = {
 
 console.log(person);
 
-console.log(person.firstname);x
+console.log(person.firstname);
 console.log(person["lastname"]);
 console.log(person.getperson());
 
@@ -19,7 +19,8 @@ console.log(firstname);
 console.log(lastname);
 console.log(age);
 
+console.log(person.firstname);
 person.email = "something@gmail.com";
 person.age = 36;
 
-console.log(email);
+console.log(person.email);
