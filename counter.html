@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(to left, pink,yellow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin : 0;
+        }
+        label {
+            font-size: 10em;
+            box-shadow: 2px 1px 10px black;
+            display: block;
+            background: linear-gradient(to right, pink,yellow);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        div {
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        button {
+            border: 1px solid ;
+            background:linear-gradient(to right, pink,yellow);
+            font-weight: bolder;
+            transform: 2sec ;
+        }
+        button:hover {
+            scale: 2;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    <label for="">0</label>
+        <button id="increase">increase</button>
+        <button id="decrease">decrease</button>
+        <button id="reset">reset</button>
+    </div>
+    <script src="counter.js"></script>
+</body>
+</html>
