@@ -27,7 +27,8 @@ A comprehensive, beginner-friendly guide to mastering JavaScript from the ground
 📖 **Format:** Well-structured markdown with colorful code blocks, comparison tables, and practical examples that render beautifully on GitHub.
 
 Start your JavaScript journey today! 💻✨
+
 =======
 📚 **JavaScript Fundamentals**
 for personal practice...
->>>>>>> 4a22c3deaa08340737b988f8212041f0441a1a6a
+
