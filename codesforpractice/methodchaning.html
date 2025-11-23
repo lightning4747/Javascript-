@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="output"></p>
+    <script>
+        console.log("helo")
+        const out = document.getElementById("output");
+        let username = window.prompt("enter user name");
+        username = username.trim();
+        if (username.length > 0) {
+            username = username[0].toUpperCase() + username.slice(1).toLocaleLowerCase();
+        }
+        else {
+            username = "type smt lil bro"
+        }
+        out.innerHTML = username;
+    </script>
+</body>
+</html>
